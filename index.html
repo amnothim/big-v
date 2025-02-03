@@ -9,12 +9,14 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #ffcccc;
+            transition: background-color 0.5s;
         }
         .container {
             margin-top: 100px;
         }
         h1 {
             color: #d63384;
+            transition: color 0.5s;
         }
         .images img {
             width: 200px;
@@ -39,41 +41,64 @@
         .no {
             background-color: #dc3545;
             color: white;
-            position: absolute;
         }
         .hidden {
             display: none;
+        }
+        #surprise, #rejected {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #surprise img, #rejected img {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container" id="main-container">
-        <h1>Hey Kumeshnie, will you be my Valentine? ❤️</h1>
+        <h1 id="title">Hey Kumeshnie, will you be my Valentine? ❤️</h1>
         <div class="images" id="first-image">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSclmM4UTRRgr3ikz5oEyJg8Z325uUemhysQ&s" alt="Picture 1">
         </div>
         <div class="buttons">
-            <button class="btn yes" onclick="showSurprise()">Yes</button>
-            <button class="btn no" onmouseover="moveButton()">No</button>
+            <button class="btn yes" onclick="showSurprise()" id="yes-btn">Yes</button>
+            <button class="btn no" onclick="handleNoClick()">No</button>
         </div>
     </div>
-    <div id="surprise" class="hidden">
+    <div id="surprise">
         <img src="https://i.pinimg.com/originals/b4/32/91/b432919ea8e2dabfab557f8da6db73ec.gif" alt="Picture 2">
         <h2>YAYYYYY! I LOVE YOUUUUUU! ❤️</h2>
     </div>
+    <div id="rejected">
+        <img src="data:image/jpeg;base64,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" alt="Sad Image">
+        <h2>Okay... Don't hate me :(</h2>
+    </div>
 
     <script>
-        function moveButton() {
+        let noClicks = 0;
+        const phrases = ["Pleaseee? 🥺", "Are you sure? 😢", "Think again? 😭", "Last chance? 💔", "Okay... :( "];
+
+        function handleNoClick() {
+            noClicks++;
             const noButton = document.querySelector('.no');
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            noButton.style.left = `${x}px`;
-            noButton.style.top = `${y}px`;
+            if (noClicks < phrases.length) {
+                noButton.innerText = phrases[noClicks - 1];
+            } else {
+                document.body.style.backgroundColor = "#808080";
+                document.getElementById("title").innerText = "Okay... i understand.., i hope you have a good day.... :(";
+                document.getElementById("main-container").style.display = "none";
+                document.getElementById("rejected").style.display = "flex";
+            }
         }
 
         function showSurprise() {
-            document.getElementById("main-container").classList.add("hidden");
-            document.getElementById("surprise").classList.remove("hidden");
+            document.getElementById("main-container").style.display = "none";
+            document.getElementById("surprise").style.display = "flex";
         }
     </script>
 </body>
